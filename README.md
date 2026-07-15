@@ -200,6 +200,3 @@ GET          /laporan/penjualan              # can:laporan.penjualan
 GET          /laporan/keuangan               # can:laporan.keuangan
 ```
 
-## Lisensi
-
-Hak cipta milik Mahasiswa Maxy Academy — Tugas Hari 9.
