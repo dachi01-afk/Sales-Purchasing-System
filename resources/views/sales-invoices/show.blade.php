@@ -23,7 +23,12 @@
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Status</dt>
                     <dd>
-                        <span class="px-2 py-1 text-xs rounded-full {{ $salesInvoice->status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' }}">{{ $salesInvoice->status }}</span>
+                        <span class="px-2 py-1 text-xs rounded-full
+                            {{ $salesInvoice->status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : '' }}
+                            {{ $salesInvoice->status === 'draft' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : '' }}
+                            {{ $salesInvoice->status === 'pending_payment' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : '' }}
+                            {{ $salesInvoice->status === 'expired' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : '' }}
+                            {{ $salesInvoice->status === 'cancelled' ? 'bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300' : '' }}">{{ $salesInvoice->status }}</span>
                     </dd>
                 </div>
             </dl>
@@ -55,7 +60,22 @@
                 </tfoot>
             </table>
 
-            <a href="{{ route('sales-invoices.index') }}" class="text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Back</a>
+            <div class="flex gap-2">
+                <a href="{{ route('sales-invoices.index') }}" class="text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Back</a>
+
+                @can('sales_invoices.edit')
+                @if($salesInvoice->status === 'draft')
+                <form action="{{ route('sales-invoices.send-payment-link', $salesInvoice) }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5">Send Payment Link</button>
+                </form>
+                @endif
+                @endcan
+
+                @if($salesInvoice->xendit_invoice_url)
+                <a href="{{ $salesInvoice->xendit_invoice_url }}" target="_blank" class="inline-flex items-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Open Payment Page</a>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

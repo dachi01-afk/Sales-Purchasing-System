@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SalesInvoice;
 use App\Models\DeliveryOrder;
+use App\Services\XenditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,6 +62,28 @@ class SalesInvoiceController extends Controller
     {
         $salesInvoice->load('items.product', 'deliveryOrder.salesOrder.customer', 'creator');
         return view('sales-invoices.show', compact('salesInvoice'));
+    }
+
+    public function sendPaymentLink(SalesInvoice $salesInvoice)
+    {
+        if ($salesInvoice->status !== 'draft') {
+            return back()->with('error', 'Only draft invoices can be sent for payment');
+        }
+
+        try {
+            $service = app(XenditService::class);
+            $result = $service->createInvoice($salesInvoice);
+
+            $salesInvoice->update([
+                'xendit_invoice_id' => $result['id'],
+                'xendit_invoice_url' => $result['invoice_url'],
+                'status' => 'pending_payment',
+            ]);
+
+            return back()->with('success', 'Payment link created successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to create payment link: ' . $e->getMessage());
+        }
     }
 
     public function edit(SalesInvoice $salesInvoice)

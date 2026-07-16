@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
     // Sales
     Route::resource('sales-orders', SalesOrderController::class)->middleware('can:sales_orders.view');
     Route::resource('delivery-orders', DeliveryOrderController::class)->middleware('can:delivery_orders.view');
+    Route::post('sales-invoices/{sales_invoice}/send-payment-link', [SalesInvoiceController::class, 'sendPaymentLink'])
+        ->name('sales-invoices.send-payment-link')
+        ->middleware('can:sales_invoices.edit');
     Route::resource('sales-invoices', SalesInvoiceController::class)->middleware('can:sales_invoices.view');
     Route::resource('sales-returns', SalesReturnController::class)->middleware('can:sales_returns.view');
     Route::resource('receipts', ReceiptController::class)->middleware('can:receipts.view');
