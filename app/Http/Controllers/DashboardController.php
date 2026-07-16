@@ -37,7 +37,7 @@ class DashboardController extends Controller
 
         $pendingPOs = PurchaseOrder::whereNotIn('status', ['completed', 'cancelled'])->count();
         $pendingSOs = SalesOrder::whereNotIn('status', ['completed', 'cancelled'])->count();
-        $unpaidInvoices = SalesInvoice::where('status', 'draft')->count();
+        $unpaidInvoices = SalesInvoice::whereIn('status', ['draft', 'pending_payment'])->count();
 
         return view('dashboard', compact(
             'totalProducts', 'totalVendors', 'totalCustomers',
