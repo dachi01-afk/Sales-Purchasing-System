@@ -1,6 +1,6 @@
 # Authorization — SPM System
 
-## User Akun (Dummy)
+## User Accounts (Dummy)
 
 | Email | Password | Role |
 |---|---|---|
@@ -10,96 +10,96 @@
 | finance@test.local | password | finance |
 | manager@test.local | password | manager |
 
-## Matrix Permission per Role
+## Permission Matrix per Role
 
-| Modul | Permission | Admin | Purchasing | Sales | Finance | Manager |
+| Module | Permission | Admin | Purchasing | Sales | Finance | Manager |
 |---|---|---|---|---|---|---|
-| **Barang** | view | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **Products** | view | ✓ | ✓ | ✓ | ✓ | ✓ |
 | | create | ✓ | ✗ | ✗ | ✗ | ✗ |
 | | edit | ✓ | ✗ | ✗ | ✗ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Vendor** | view | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Vendors** | view | ✓ | ✓ | ✗ | ✓ | ✓ |
 | | create | ✓ | ✓ | ✗ | ✗ | ✗ |
 | | edit | ✓ | ✓ | ✗ | ✗ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Customer** | view | ✓ | ✗ | ✓ | ✓ | ✓ |
+| **Customers** | view | ✓ | ✗ | ✓ | ✓ | ✓ |
 | | create | ✓ | ✗ | ✓ | ✗ | ✗ |
 | | edit | ✓ | ✗ | ✓ | ✗ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Permintaan** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Purchase Requests** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **PO** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Purchase Orders** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Penerimaan** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Goods Receipts** | view/create/edit | ✓ | ✓ | ✗ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Invoice Purchasing** | view | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Purchase Invoices** | view | ✓ | ✓ | ✗ | ✓ | ✓ |
 | | create/edit | ✓ | ✗ | ✗ | ✓ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Retur Purchasing** | view | ✓ | ✓ | ✗ | ✗ | ✓ |
+| **Purchase Returns** | view | ✓ | ✓ | ✗ | ✗ | ✓ |
 | | create | ✓ | ✓ | ✗ | ✗ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **SO** | view/create/edit | ✓ | ✗ | ✓ | ✓ | ✓ |
+| **Sales Orders** | view/create/edit | ✓ | ✗ | ✓ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **DO** | view/create/edit | ✓ | ✗ | ✓ | ✓ | ✓ |
+| **Delivery Orders** | view/create/edit | ✓ | ✗ | ✓ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Invoice Sales** | view | ✓ | ✗ | ✓ | ✓ | ✓ |
+| **Sales Invoices** | view | ✓ | ✗ | ✓ | ✓ | ✓ |
 | | create/edit | ✓ | ✗ | ✗ | ✓ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Retur Sales** | view | ✓ | ✗ | ✓ | ✗ | ✓ |
+| **Sales Returns** | view | ✓ | ✗ | ✓ | ✗ | ✓ |
 | | create | ✓ | ✗ | ✓ | ✗ | ✗ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Kwitansi** | view/create/edit | ✓ | ✗ | ✗ | ✓ | ✓ |
+| **Receipts** | view/create/edit | ✓ | ✗ | ✗ | ✓ | ✓ |
 | | delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| **Laporan Pembelian** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
-| **Laporan Penjualan** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
-| **Laporan Keuangan** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
+| **Purchase Reports** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
+| **Sales Reports** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
+| **Financial Reports** | view | ✓ | ✗ | ✗ | ✗ | ✓ |
 
-## Cara Penggunaan
+## Usage Guide
 
-### Di Route (web.php)
+### In Routes (web.php)
 
-Route sudah diproteksi menggunakan middleware `can:`:
+Routes are protected using the `can:` middleware:
 
 ```php
-Route::middleware(['can:barang.view'])->group(function () {
-    Route::resource('barang', BarangController::class);
+Route::middleware(['can:products.view'])->group(function () {
+    Route::resource('products', ProductController::class);
 });
 ```
 
-Laravel otomatis memetakan:
+Laravel automatically maps:
 - `index`/`show` → `{module}.view`
 - `create`/`store` → `{module}.create`
 - `edit`/`update` → `{module}.edit`
 - `destroy` → `{module}.delete`
 
-### Di View (Blade)
+### In Views (Blade)
 
-Sembunyikan tombol berdasarkan permission:
+Hide buttons based on permission:
 
 ```blade
-@can('barang.edit')
-    <a href="{{ route('barang.edit', $b) }}">Edit</a>
+@can('products.edit')
+    <a href="{{ route('products.edit', $product) }}">Edit</a>
 @endcan
 
-@can('barang.delete')
-    <form action="{{ route('barang.destroy', $b) }}" method="POST">
+@can('products.delete')
+    <form action="{{ route('products.destroy', $product) }}" method="POST">
         @csrf @method('DELETE')
-        <button type="submit">Hapus</button>
+        <button type="submit">Delete</button>
     </form>
 @endcan
 ```
 
-### Di Controller / Logic Lain
+### In Controller / Logic
 
 ```php
-if ($user->can('laporan.keuangan')) {
-    // tampilkan data keuangan
+if ($user->can('reports.financial')) {
+    // show financial data
 }
 ```
 
-## Catatan
+## Notes
 
-- Permission name mengikuti pattern: `{module}.{action}`
-- Module name konsisten dengan route prefix (kecuali invoice/retur yang butuh suffix `_purchasing` / `_sales`)
-- Admin mendapat **semua** permission (master + purchasing + sales + finance + laporan)
-- Seeder bisa dijalankan kapan saja: `php artisan db:seed --class=RolePermissionSeeder`
+- Permission names follow the pattern: `{module}.{action}`
+- Module names use plural snake_case (e.g., `purchase_orders.view`)
+- Admin gets **all** permissions (master + purchasing + sales + finance + reports)
+- Run the seeder anytime: `php artisan db:seed --class=RolePermissionSeeder`

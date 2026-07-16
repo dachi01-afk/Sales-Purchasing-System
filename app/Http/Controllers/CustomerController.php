@@ -3,55 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MCustomer;
+use App\Models\Customer;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = MCustomer::paginate(10);
-        return view('master.customer.index', compact('customers'));
+        $customers = Customer::paginate(10);
+        return view('customers.index', compact('customers'));
     }
 
     public function create()
     {
-        return view('master.customer.create');
+        return view('customers.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_customer' => 'required|string|max:255',
-            'no_telp' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
         ]);
 
-        MCustomer::create($validated);
+        Customer::create($validated);
 
-        return redirect()->route('customer.index')->with('success', 'Customer berhasil ditambahkan');
+        return redirect()->route('customers.index')->with('success', 'Customer created successfully');
     }
 
-    public function edit(MCustomer $customer)
+    public function edit(Customer $customer)
     {
-        return view('master.customer.edit', compact('customer'));
+        return view('customers.edit', compact('customer'));
     }
 
-    public function update(Request $request, MCustomer $customer)
+    public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
-            'nama_customer' => 'required|string|max:255',
-            'no_telp' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
         ]);
 
         $customer->update($validated);
 
-        return redirect()->route('customer.index')->with('success', 'Customer berhasil diupdate');
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully');
     }
 
-    public function destroy(MCustomer $customer)
+    public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->route('customer.index')->with('success', 'Customer berhasil dihapus');
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully');
     }
 }

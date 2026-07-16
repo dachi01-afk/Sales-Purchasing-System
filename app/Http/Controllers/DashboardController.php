@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MBarang;
-use App\Models\MVendor;
-use App\Models\MCustomer;
-use App\Models\TPo;
-use App\Models\TSo;
-use App\Models\TDo;
-use App\Models\TInvoiceSales;
-use App\Models\TInvoicePurchasing;
-use App\Models\TKwitansi;
+use App\Models\Product;
+use App\Models\Vendor;
+use App\Models\Customer;
+use App\Models\PurchaseOrder;
+use App\Models\SalesOrder;
+use App\Models\DeliveryOrder;
+use App\Models\SalesInvoice;
+use App\Models\PurchaseInvoice;
+use App\Models\Receipt;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -19,32 +19,32 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $now = now();
-        $bulanIni = [$now->startOfMonth()->format('Y-m-d'), $now->copy()->endOfMonth()->format('Y-m-d')];
+        $thisMonth = [$now->startOfMonth()->format('Y-m-d'), $now->copy()->endOfMonth()->format('Y-m-d')];
 
-        $totalBarang = MBarang::count();
-        $totalVendor = MVendor::count();
-        $totalCustomer = MCustomer::count();
+        $totalProducts = Product::count();
+        $totalVendors = Vendor::count();
+        $totalCustomers = Customer::count();
 
-        $totalPoBulanIni = TPo::whereMonth('tanggal', $now->month)->whereYear('tanggal', $now->year)->count();
-        $totalSoBulanIni = TSo::whereMonth('tanggal', $now->month)->whereYear('tanggal', $now->year)->count();
+        $totalPoThisMonth = PurchaseOrder::whereMonth('date', $now->month)->whereYear('date', $now->year)->count();
+        $totalSoThisMonth = SalesOrder::whereMonth('date', $now->month)->whereYear('date', $now->year)->count();
 
-        $totalPembelian = TInvoicePurchasing::whereMonth('tanggal', $now->month)->whereYear('tanggal', $now->year)->sum('total');
-        $totalPenjualan = TInvoiceSales::whereMonth('tanggal', $now->month)->whereYear('tanggal', $now->year)->sum('total');
-        $totalKwitansi = TKwitansi::whereMonth('tanggal', $now->month)->whereYear('tanggal', $now->year)->sum('jumlah');
+        $totalPurchases = PurchaseInvoice::whereMonth('date', $now->month)->whereYear('date', $now->year)->sum('total');
+        $totalSales = SalesInvoice::whereMonth('date', $now->month)->whereYear('date', $now->year)->sum('total');
+        $totalReceipts = Receipt::whereMonth('date', $now->month)->whereYear('date', $now->year)->sum('amount');
 
-        $poTerbaru = TPo::with('vendor')->latest()->take(5)->get();
-        $soTerbaru = TSo::with('customer')->latest()->take(5)->get();
+        $latestPOs = PurchaseOrder::with('vendor')->latest()->take(5)->get();
+        $latestSOs = SalesOrder::with('customer')->latest()->take(5)->get();
 
-        $poPending = TPo::whereNotIn('status', ['selesai', 'dibatalkan'])->count();
-        $soPending = TSo::whereNotIn('status', ['selesai', 'dibatalkan'])->count();
-        $invoiceSalesBelumLunas = TInvoiceSales::where('status', 'draft')->count();
+        $pendingPOs = PurchaseOrder::whereNotIn('status', ['completed', 'cancelled'])->count();
+        $pendingSOs = SalesOrder::whereNotIn('status', ['completed', 'cancelled'])->count();
+        $unpaidInvoices = SalesInvoice::where('status', 'draft')->count();
 
         return view('dashboard', compact(
-            'totalBarang', 'totalVendor', 'totalCustomer',
-            'totalPoBulanIni', 'totalSoBulanIni',
-            'totalPembelian', 'totalPenjualan', 'totalKwitansi',
-            'poTerbaru', 'soTerbaru',
-            'poPending', 'soPending', 'invoiceSalesBelumLunas'
+            'totalProducts', 'totalVendors', 'totalCustomers',
+            'totalPoThisMonth', 'totalSoThisMonth',
+            'totalPurchases', 'totalSales', 'totalReceipts',
+            'latestPOs', 'latestSOs',
+            'pendingPOs', 'pendingSOs', 'unpaidInvoices'
         ));
     }
 }

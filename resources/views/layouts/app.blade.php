@@ -76,7 +76,7 @@
                     </a>
                 </li>
 
-                @canany(['barang.view', 'vendor.view', 'customer.view'])
+                @canany(['products.view', 'vendors.view', 'customers.view'])
                 <li>
                     <button type="button" class="flex items-center p-2 w-full text-base font-medium text-gray-900 dark:text-white rounded-lg transition duration-75 group hover:bg-gray-100 dark:hover:bg-gray-700" aria-controls="dropdown-master" data-collapse-toggle="dropdown-master">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -88,20 +88,20 @@
                         </svg>
                     </button>
                     <ul id="dropdown-master" class="space-y-2 py-2">
-                        @can('barang.view')
-                        <li><a href="{{ route('barang.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('barang.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Barang</a></li>
+                        @can('products.view')
+                        <li><a href="{{ route('products.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('products.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Products</a></li>
                         @endcan
-                        @can('vendor.view')
-                        <li><a href="{{ route('vendor.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('vendor.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Vendor</a></li>
+                        @can('vendors.view')
+                        <li><a href="{{ route('vendors.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('vendors.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Vendors</a></li>
                         @endcan
-                        @can('customer.view')
-                        <li><a href="{{ route('customer.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('customer.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Customer</a></li>
+                        @can('customers.view')
+                        <li><a href="{{ route('customers.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('customers.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Customers</a></li>
                         @endcan
                     </ul>
                 </li>
                 @endcanany
 
-                @canany(['permintaan.view', 'po.view', 'penerimaan.view', 'invoice_purchasing.view', 'retur_purchasing.view'])
+                @canany(['purchase_requests.view', 'purchase_orders.view', 'goods_receipts.view', 'purchase_invoices.view', 'purchase_returns.view'])
                 <li>
                     <button type="button" class="flex items-center p-2 w-full text-base font-medium text-gray-900 dark:text-white rounded-lg transition duration-75 group hover:bg-gray-100 dark:hover:bg-gray-700" aria-controls="dropdown-purchasing" data-collapse-toggle="dropdown-purchasing">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -113,16 +113,16 @@
                         </svg>
                     </button>
                     <ul id="dropdown-purchasing" class="hidden space-y-2 py-2">
-                        @can('permintaan.view')<li><a href="{{ route('permintaan.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('permintaan.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Permintaan Pembelian</a></li>@endcan
-                        @can('po.view')<li><a href="{{ route('po.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Purchase Order</a></li>@endcan
-                        @can('penerimaan.view')<li><a href="{{ route('penerimaan.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Penerimaan Barang</a></li>@endcan
-                        @can('invoice_purchasing.view')<li><a href="{{ route('invoice-purchasing.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('invoice-purchasing.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Invoice Purchasing</a></li>@endcan
-                        @can('retur_purchasing.view')<li><a href="{{ route('retur-purchasing.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('retur-purchasing.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Retur Purchasing</a></li>@endcan
+                        @can('purchase_requests.view')<li><a href="{{ route('purchase-requests.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('purchase-requests.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Requests</a></li>@endcan
+                        @can('purchase_orders.view')<li><a href="{{ route('purchase-orders.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('purchase-orders.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Orders</a></li>@endcan
+                        @can('goods_receipts.view')<li><a href="{{ route('goods-receipts.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('goods-receipts.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Goods Receipts</a></li>@endcan
+                        @can('purchase_invoices.view')<li><a href="{{ route('purchase-invoices.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('purchase-invoices.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Invoices</a></li>@endcan
+                        @can('purchase_returns.view')<li><a href="{{ route('purchase-returns.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('purchase-returns.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Returns</a></li>@endcan
                     </ul>
                 </li>
                 @endcanany
 
-                @canany(['so.view', 'do.view', 'invoice_sales.view', 'retur_sales.view', 'kwitansi.view'])
+                @canany(['sales_orders.view', 'delivery_orders.view', 'sales_invoices.view', 'sales_returns.view', 'receipts.view'])
                 <li>
                     <button type="button" class="flex items-center p-2 w-full text-base font-medium text-gray-900 dark:text-white rounded-lg transition duration-75 group hover:bg-gray-100 dark:hover:bg-gray-700" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -134,26 +134,26 @@
                         </svg>
                     </button>
                     <ul id="dropdown-sales" class="hidden space-y-2 py-2">
-                        @can('so.view')<li><a href="{{ route('so.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('so.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Order</a></li>@endcan
-                        @can('do.view')<li><a href="{{ route('do.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('do.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Delivery Order</a></li>@endcan
-                        @can('invoice_sales.view')<li><a href="{{ route('invoice-sales.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('invoice-sales.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Invoice Sales</a></li>@endcan
-                        @can('retur_sales.view')<li><a href="{{ route('retur-sales.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('retur-sales.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Retur Sales</a></li>@endcan
+                        @can('sales_orders.view')<li><a href="{{ route('sales-orders.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('sales-orders.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Orders</a></li>@endcan
+                        @can('delivery_orders.view')<li><a href="{{ route('delivery-orders.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('delivery-orders.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Delivery Orders</a></li>@endcan
+                        @can('sales_invoices.view')<li><a href="{{ route('sales-invoices.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('sales-invoices.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Invoices</a></li>@endcan
+                        @can('sales_returns.view')<li><a href="{{ route('sales-returns.index') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('sales-returns.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Returns</a></li>@endcan
                     </ul>
                 </li>
                 @endcanany
 
-                @can('kwitansi.view')
+                @can('receipts.view')
                 <li>
-                    <a href="{{ route('kwitansi.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg {{ request()->routeIs('kwitansi.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    <a href="{{ route('receipts.index') }}" class="flex items-center p-2 text-base font-medium rounded-lg {{ request()->routeIs('receipts.*') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                         <svg class="w-6 h-6 text-gray-500 transition duration-75" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="ml-3">Kwitansi</span>
+                        <span class="ml-3">Receipts</span>
                     </a>
                 </li>
                 @endcan
 
-                @canany(['laporan.pembelian', 'laporan.penjualan', 'laporan.keuangan'])
+                @canany(['reports.purchases', 'reports.sales', 'reports.financial'])
                 <li>
                     <button type="button" class="flex items-center p-2 w-full text-base font-medium text-gray-900 dark:text-white rounded-lg transition duration-75 group hover:bg-gray-100 dark:hover:bg-gray-700" aria-controls="dropdown-laporan" data-collapse-toggle="dropdown-laporan">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -165,10 +165,10 @@
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
                     </button>
-                    <ul id="dropdown-laporan" class="space-y-2 py-2 {{ request()->routeIs('laporan.*') ? '' : 'hidden' }}">
-                        @can('laporan.pembelian')<li><a href="{{ route('laporan.pembelian') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('laporan.pembelian') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Laporan Pembelian</a></li>@endcan
-                        @can('laporan.penjualan')<li><a href="{{ route('laporan.penjualan') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('laporan.penjualan') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Laporan Penjualan</a></li>@endcan
-                        @can('laporan.keuangan')<li><a href="{{ route('laporan.keuangan') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('laporan.keuangan') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Laporan Keuangan</a></li>@endcan
+                    <ul id="dropdown-laporan" class="space-y-2 py-2 {{ request()->routeIs('reports.*') ? '' : 'hidden' }}">
+                        @can('reports.purchases')<li><a href="{{ route('reports.purchases') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.purchases') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Reports</a></li>@endcan
+                        @can('reports.sales')<li><a href="{{ route('reports.sales') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.sales') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Reports</a></li>@endcan
+                        @can('reports.financial')<li><a href="{{ route('reports.financial') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.financial') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Financial Reports</a></li>@endcan
                     </ul>
                 </li>
                 @endcanany

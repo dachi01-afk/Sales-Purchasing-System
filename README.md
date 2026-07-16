@@ -6,13 +6,13 @@ Aplikasi manajemen siklus pembelian dan penjualan full-stack berbasis **Laravel 
 
 | Modul | Fitur |
 |---|---|
-| **Master Data** | CRUD Barang, Vendor, Customer |
-| **Purchasing Cycle** | Permintaan Pembelian → PO → Penerimaan → Invoice → Retur |
-| **Sales Cycle** | SO → DO → Invoice → Retur → Kwitansi |
-| **Laporan** | Pembelian, Penjualan, Keuangan |
-| **Dashboard** | Statistik bulan ini, PO/SO terbaru, ringkasan pending (role-based) |
-| **RBAC** | 5 role dengan permission granular per modul |
-| **UI** | Dark mode penuh, Flowbite components, responsive |
+| **Master Data** | CRUD Products, Vendors, Customers |
+| **Purchasing Cycle** | Purchase Request → PO → Goods Receipt → Invoice → Return |
+| **Sales Cycle** | SO → DO → Invoice → Return → Receipt |
+| **Reports** | Purchases, Sales, Financial |
+| **Dashboard** | Monthly stats, latest PO/SO, pending summary (role-based) |
+| **RBAC** | 5 roles with granular permissions per module |
+| **UI** | Full dark mode, Flowbite components, responsive |
 
 ## Tech Stack
 
@@ -23,42 +23,23 @@ Aplikasi manajemen siklus pembelian dan penjualan full-stack berbasis **Laravel 
 
 ## Struktur Database
 
-### Master Data Group
+### Purchasing Cycle (Header-Detail)
 
 ```
-m_barang ─┬── detail_permintaan
-           ├── detail_po
-           ├── detail_penerimaan
-           ├── detail_invoice_purchasing
-           ├── detail_retur_purchasing
-           ├── detail_so
-           ├── detail_do
-           ├── detail_invoice_sales
-           └── detail_retur_sales
-
-m_vendor   ─── t_purchase_order
-m_customer ─── t_sales_order
+purchase_requests ─→ purchase_orders ─→ goods_receipts ─→ purchase_invoices
+                                                └─── purchase_returns
 ```
 
-### Purchasing Cycle
+### Sales Cycle (Header-Detail)
 
 ```
-Permintaan → PO → Penerimaan → Invoice Purchasing
-                  └── Retur Purchasing
+sales_orders ─→ delivery_orders ─→ sales_invoices
+                         └─── sales_returns
 ```
 
 Setiap transaksi menggunakan pola **Header-Detail**:
-- **Header:** menyimpan data umum (nomor faktur, tanggal, total)
-- **Detail:** menyimpan data per-item (sku, kuantitas, harga, diskon)
-
-### Sales Cycle
-
-```
-SO → DO → Invoice Sales
-     └── Retur Sales
-```
-
-Pola header-detail yang sama.
+- **Header:** data umum (date, status, total)
+- **Detail:** data per-item (sku, qty, price, subtotal)
 
 ## Instalasi
 
@@ -107,65 +88,24 @@ composer run dev
 | finance@test.local | password | finance |
 | manager@test.local | password | manager |
 
-## Struktur Folder
-
-```
-app/
-├── Http/
-│   ├── Controllers/
-│   │   ├── Master/          # BarangController, VendorController, CustomerController
-│   │   ├── Purchasing/      # PermintaanController, POController, PenerimaanController, InvoicePurchasingController, ReturPurchasingController
-│   │   ├── Sales/           # SOController, DOController, InvoiceSalesController, ReturSalesController, KwitansiController
-│   │   ├── Laporan/         # LaporanPembelianController, LaporanPenjualanController, LaporanKeuanganController
-│   │   └── DashboardController.php
-│   └── Requests/            # Form request validasi per modul
-├── Models/
-│   ├── Master/              # Barang, Vendor, Customer
-│   ├── Purchasing/          # Permintaan, PO, Penerimaan, InvoicePurchasing, ReturPurchasing
-│   └── Sales/               # SO, DO, InvoiceSales, ReturSales, Kwitansi
-│
-database/
-├── migrations/              # Semua migration
-└── seeders/
-    ├── RolePermissionSeeder.php
-    └── UserSeeder.php
-
-resources/views/
-├── layouts/
-│   ├── app.blade.php        # Layout utama (sidebar + navbar + dark mode)
-│   └── guest.blade.php      # Layout login (Flowbite style)
-├── master/                  # barang/, vendor/, customer/
-├── purchasing/              # permintaan/, po/, penerimaan/, invoice/, retur/
-├── sales/                   # so/, do/, invoice/, retur/, kwitansi/
-├── laporan/                 # pembelian/, penjualan/, keuangan/
-├── auth/                    # login.blade.php (tanpa register/forgot-password)
-├── components/              # delete-modal reusable
-├── dashboard.blade.php
-└── navigation.blade.php
-
-routes/
-├── web.php                  # Semua route terproteksi middleware can:
-└── auth.php                 # Route register & forgot-password di-comment
-```
-
 ## Authorization Matrix
 
-| Modul | Permission | Admin | Purchasing | Sales | Finance | Manager |
+| Module | Permission | Admin | Purchasing | Sales | Finance | Manager |
 |---|---|---|---|---|---|---|
-| **Barang** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/-/-/- | ✓/-/-/- | ✓/-/-/- | ✓/-/-/- |
-| **Vendor** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
-| **Customer** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
-| **Permintaan** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
-| **PO** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
-| **Penerimaan** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
-| **Invoice Purchasing** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/-/-/- | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
-| **Retur Purchasing** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/-/- | -/-/-/- | -/-/-/- | ✓/-/-/- |
-| **SO** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
-| **DO** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
-| **Invoice Sales** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
-| **Retur Sales** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/-/- | -/-/-/- | ✓/-/-/- |
-| **Kwitansi** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
-| **Laporan** | pembelian/penjualan/keuangan | ✓/✓/✓ | -/-/- | -/-/- | -/-/- | ✓/✓/✓ |
+| **Products** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/-/-/- | ✓/-/-/- | ✓/-/-/- | ✓/-/-/- |
+| **Vendors** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
+| **Customers** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
+| **Purchase Requests** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
+| **Purchase Orders** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
+| **Goods Receipts** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/✓/- | -/-/-/- | ✓/-/-/- | ✓/-/-/- |
+| **Purchase Invoices** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/-/-/- | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
+| **Purchase Returns** | view/create/edit/delete | ✓/✓/✓/✓ | ✓/✓/-/- | -/-/-/- | -/-/-/- | ✓/-/-/- |
+| **Sales Orders** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
+| **Delivery Orders** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- | ✓/-/-/- |
+| **Sales Invoices** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
+| **Sales Returns** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/-/- | -/-/-/- | ✓/-/-/- |
+| **Receipts** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
+| **Reports** | purchases/sales/financial | ✓/✓/✓ | -/-/- | -/-/- | -/-/- | ✓/✓/✓ |
 
 Detail permission selengkapnya: [docs/authorization.md](docs/authorization.md)
 
@@ -176,27 +116,26 @@ GET/POST/... /login                          # Login
 GET          /dashboard                      # Dashboard
 
 # Master Data
-/resource    /barang                         # can:barang.view
-/resource    /vendor                         # can:vendor.view
-/resource    /customer                       # can:customer.view
+/resource    /products                       # can:products.view
+/resource    /vendors                        # can:vendors.view
+/resource    /customers                      # can:customers.view
 
 # Purchasing
-/resource    /permintaan                     # can:permintaan.view
-/resource    /po                             # can:po.view
-/resource    /penerimaan                     # can:penerimaan.view
-/resource    /invoice-purchasing             # can:invoice_purchasing.view
-/resource    /retur-purchasing               # can:retur_purchasing.view
+/resource    /purchase-requests              # can:purchase_requests.view
+/resource    /purchase-orders                # can:purchase_orders.view
+/resource    /goods-receipts                 # can:goods_receipts.view
+/resource    /purchase-invoices              # can:purchase_invoices.view
+/resource    /purchase-returns               # can:purchase_returns.view
 
 # Sales
-/resource    /so                             # can:so.view
-/resource    /do                             # can:do.view
-/resource    /invoice-sales                  # can:invoice_sales.view
-/resource    /retur-sales                    # can:retur_sales.view
-/resource    /kwitansi                       # can:kwitansi.view
+/resource    /sales-orders                   # can:sales_orders.view
+/resource    /delivery-orders                # can:delivery_orders.view
+/resource    /sales-invoices                 # can:sales_invoices.view
+/resource    /sales-returns                  # can:sales_returns.view
+/resource    /receipts                       # can:receipts.view
 
-# Laporan
-GET          /laporan/pembelian              # can:laporan.pembelian
-GET          /laporan/penjualan              # can:laporan.penjualan
-GET          /laporan/keuangan               # can:laporan.keuangan
+# Reports
+GET          /reports/purchases              # can:reports.purchases
+GET          /reports/sales                  # can:reports.sales
+GET          /reports/financial              # can:reports.financial
 ```
-

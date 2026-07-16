@@ -1,20 +1,20 @@
 <?php
 
-use App\Http\Controllers\BarangController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DOController;
-use App\Http\Controllers\InvoicePurchasingController;
-use App\Http\Controllers\InvoiceSalesController;
-use App\Http\Controllers\KwitansiController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\PenerimaanController;
-use App\Http\Controllers\PermintaanController;
-use App\Http\Controllers\POController;
+use App\Http\Controllers\DeliveryOrderController;
+use App\Http\Controllers\PurchaseInvoiceController;
+use App\Http\Controllers\SalesInvoiceController;
+use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\GoodsReceiptController;
+use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReturPurchasingController;
-use App\Http\Controllers\ReturSalesController;
-use App\Http\Controllers\SOController;
+use App\Http\Controllers\PurchaseReturnController;
+use App\Http\Controllers\SalesReturnController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,28 +28,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Master Data
-    Route::resource('barang', BarangController::class)->middleware('can:barang.view');
-    Route::resource('vendor', VendorController::class)->middleware('can:vendor.view');
-    Route::resource('customer', CustomerController::class)->middleware('can:customer.view');
+    Route::resource('products', ProductController::class)->middleware('can:products.view');
+    Route::resource('vendors', VendorController::class)->middleware('can:vendors.view');
+    Route::resource('customers', CustomerController::class)->middleware('can:customers.view');
 
     // Purchasing
-    Route::resource('permintaan', PermintaanController::class)->middleware('can:permintaan.view');
-    Route::resource('po', POController::class)->middleware('can:po.view');
-    Route::resource('penerimaan', PenerimaanController::class)->middleware('can:penerimaan.view');
-    Route::resource('invoice-purchasing', InvoicePurchasingController::class)->middleware('can:invoice_purchasing.view');
-    Route::resource('retur-purchasing', ReturPurchasingController::class)->middleware('can:retur_purchasing.view');
+    Route::resource('purchase-requests', PurchaseRequestController::class)->middleware('can:purchase_requests.view');
+    Route::resource('purchase-orders', PurchaseOrderController::class)->middleware('can:purchase_orders.view');
+    Route::resource('goods-receipts', GoodsReceiptController::class)->middleware('can:goods_receipts.view');
+    Route::resource('purchase-invoices', PurchaseInvoiceController::class)->middleware('can:purchase_invoices.view');
+    Route::resource('purchase-returns', PurchaseReturnController::class)->middleware('can:purchase_returns.view');
 
     // Sales
-    Route::resource('so', SOController::class)->middleware('can:so.view');
-    Route::resource('do', DOController::class)->middleware('can:do.view');
-    Route::resource('invoice-sales', InvoiceSalesController::class)->middleware('can:invoice_sales.view');
-    Route::resource('retur-sales', ReturSalesController::class)->middleware('can:retur_sales.view');
-    Route::resource('kwitansi', KwitansiController::class)->middleware('can:kwitansi.view');
+    Route::resource('sales-orders', SalesOrderController::class)->middleware('can:sales_orders.view');
+    Route::resource('delivery-orders', DeliveryOrderController::class)->middleware('can:delivery_orders.view');
+    Route::resource('sales-invoices', SalesInvoiceController::class)->middleware('can:sales_invoices.view');
+    Route::resource('sales-returns', SalesReturnController::class)->middleware('can:sales_returns.view');
+    Route::resource('receipts', ReceiptController::class)->middleware('can:receipts.view');
 
     // Reports
-    Route::get('laporan/pembelian', [LaporanController::class, 'pembelian'])->name('laporan.pembelian')->middleware('can:laporan.pembelian');
-    Route::get('laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan')->middleware('can:laporan.penjualan');
-    Route::get('laporan/keuangan', [LaporanController::class, 'keuangan'])->name('laporan.keuangan')->middleware('can:laporan.keuangan');
+    Route::get('reports/purchases', [ReportController::class, 'purchases'])->name('reports.purchases')->middleware('can:reports.purchases');
+    Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales')->middleware('can:reports.sales');
+    Route::get('reports/financial', [ReportController::class, 'financial'])->name('reports.financial')->middleware('can:reports.financial');
 });
 
 require __DIR__.'/auth.php';
