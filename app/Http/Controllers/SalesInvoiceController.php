@@ -28,7 +28,7 @@ class SalesInvoiceController extends Controller
         $validated = $request->validate([
             'delivery_order_id' => 'required|exists:delivery_orders,id',
             'date' => 'required|date',
-            'status' => 'required|in:draft,paid',
+            'status' => 'required|in:draft,pending_payment,paid,expired,cancelled',
             'items' => 'required|array|min:1',
             'items.*.sku' => 'required|exists:products,sku',
             'items.*.qty' => 'required|integer|min:1',
@@ -75,7 +75,7 @@ class SalesInvoiceController extends Controller
         $validated = $request->validate([
             'delivery_order_id' => 'required|exists:delivery_orders,id',
             'date' => 'required|date',
-            'status' => 'required|in:draft,paid',
+            'status' => 'required|in:draft,pending_payment,paid,expired,cancelled',
             'items' => 'required|array|min:1',
             'items.*.sku' => 'required|exists:products,sku',
             'items.*.qty' => 'required|integer|min:1',
