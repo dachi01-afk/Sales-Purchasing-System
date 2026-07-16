@@ -1,28 +1,28 @@
 <x-app-layout>
-    <x-slot name="header">Sales Return Detail #{{ $salesReturn->id_retur_sales }}</x-slot>
+    <x-slot name="header">Sales Return Detail #{{ $salesReturn->id }}</x-slot>
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <dl class="grid grid-cols-2 gap-4 mb-6">
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#Return</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $salesReturn->id_retur_sales }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $salesReturn->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#DO</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $salesReturn->do->id_do }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $salesReturn->deliveryOrder->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Customer</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->do->so->customer->nama_customer }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->deliveryOrder->salesOrder->customer->name }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Date</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->tanggal->format('d/m/Y') }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->date->format('d/m/Y') }}</dd>
                 </div>
                 <div class="col-span-2">
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Reason</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->alasan ?? '-' }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $salesReturn->reason ?? '-' }}</dd>
                 </div>
             </dl>
 
@@ -35,11 +35,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($salesReturn->details as $d)
+                    @foreach($salesReturn->items as $d)
                     <tr class="border-b dark:border-gray-700">
-                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->sku }} — {{ $d->barang->nama_barang ?? '-' }}</td>
-                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->qty_retur }}</td>
-                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->alasan_item ?? '-' }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->sku }} — {{ $d->product->name ?? '-' }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->qty }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->reason ?? '-' }}</td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -6,11 +6,11 @@
             <form action="{{ route('purchase-invoices.store') }}" method="POST" x-data="{
                 poId: '',
                 items: [],
-                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.harga)), 0) },
+                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.price)), 0) },
                 loadItems() {
-                    const select = document.getElementById('id_po');
+                    const select = document.getElementById('purchase_order_id');
                     const data = select.options[select.selectedIndex]?.dataset.items;
-                    this.items = data ? JSON.parse(data).map(i => ({ ...i, qty: i.qty, harga: i.harga || 0 })) : [];
+                    this.items = data ? JSON.parse(data).map(i => ({ ...i, qty: i.qty, price: i.price || 0 })) : [];
                 }
             }">
                 @csrf
@@ -18,16 +18,16 @@
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purchase Order</label>
-                        <select name="id_po" id="id_po" x-model="poId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="purchase_order_id" id="purchase_order_id" x-model="poId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select PO</option>
                             @foreach($purchaseOrders as $po)
-                            <option value="{{ $po->id_po }}" data-items='{{ $po->details->map(fn($d) => ['sku' => $d->sku, 'nama_barang' => $d->barang->nama_barang ?? '', 'qty' => $d->qty, 'harga' => $d->harga]) }}'>#{{ $po->id_po }} — {{ $po->vendor->nama_vendor }} ({{ $po->tanggal->format('d/m/Y') }})</option>
+                            <option value="{{ $po->id }}" data-items='{{ $po->items->map(fn($d) => ['sku' => $d->sku, 'name' => $d->product->name ?? '', 'qty' => $d->qty, 'price' => $d->price]) }}'>#{{ $po->id }} — {{ $po->vendor->name }} ({{ $po->date->format('d/m/Y') }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                     <select name="status" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                         <option value="draft">Draft</option>
-                        <option value="lunas">Paid</option>
+                        <option value="paid">Paid</option>
                     </select>
                 </div>
 
@@ -48,15 +48,15 @@
                         <div class="flex gap-3 items-center mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex-[2]">
                                 <input type="hidden" :name="'items[' + index + '][sku]'" x-model="item.sku">
-                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.nama_barang"></span>
+                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.name"></span>
                             </div>
                             <div class="w-20">
                                 <input type="number" :name="'items[' + index + '][qty]'" x-model="item.qty" min="1" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                             <div class="w-28">
-                                <input type="number" step="0.01" :name="'items[' + index + '][harga]'" x-model="item.harga" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" step="0.01" :name="'items[' + index + '][price]'" x-model="item.price" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
-                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.harga)).toLocaleString('id-ID')"></div>
+                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.price)).toLocaleString('id-ID')"></div>
                         </div>
                     </template>
                 </div>

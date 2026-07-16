@@ -33,7 +33,7 @@
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Total Receipts (Rp)</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">Rp {{ number_format($totalKwitansi, 0, ',', '.') }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">Rp {{ number_format($totalReceipts, 0, ',', '.') }}</p>
         </div>
     </div>
 
@@ -50,12 +50,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($sos as $so)
+                    @forelse($salesOrders as $so)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $so->id_so }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->tanggal->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->customer->nama_customer }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->details->count() }} item(s)</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $so->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->customer->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $so->items->count() }} item(s)</td>
                         <td class="px-6 py-4">{{ $so->status }}</td>
                     </tr>
                     @empty
@@ -64,8 +64,8 @@
                 </tbody>
             </table>
         </div>
-        @if($sos->hasPages())
-        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $sos->links() }}</div>
+        @if($salesOrders->hasPages())
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $salesOrders->links() }}</div>
         @endif
     </div>
 </x-app-layout>

@@ -5,8 +5,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <form action="{{ route('sales-orders.store') }}" method="POST" x-data="{
                 items: [],
-                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.harga)), 0) },
-                addItem() { this.items.push({ sku: '', nama_barang: '', qty: 1, harga: 0 }) },
+                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.price)), 0) },
+                addItem() { this.items.push({ sku: '', name: '', qty: 1, price: 0 }) },
                 removeItem(i) { this.items.splice(i, 1) }
             }">
                 @csrf
@@ -14,16 +14,16 @@
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer</label>
-                        <select name="id_customer" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="customer_id" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select Customer</option>
                             @foreach($customers as $c)
-                            <option value="{{ $c->id_customer }}">{{ $c->nama_customer }}</option>
+                            <option value="{{ $c->id }}">{{ $c->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
@@ -31,8 +31,8 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                     <select name="status" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                         <option value="draft">Draft</option>
-                        <option value="dikirim">Shipped</option>
-                        <option value="selesai">Completed</option>
+                        <option value="sent">Sent</option>
+                        <option value="completed">Completed</option>
                     </select>
                 </div>
 
@@ -47,7 +47,7 @@
                                 <select :name="'items[' + index + '][sku]'" x-model="item.sku" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                                     <option value="">Select Item</option>
                                     @foreach($products as $product)
-                                    <option value="{{ $product->sku }}">{{ $product->sku }} — {{ $product->nama_barang }}</option>
+                                    <option value="{{ $product->sku }}">{{ $product->sku }} — {{ $product->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -55,9 +55,9 @@
                                 <input type="number" :name="'items[' + index + '][qty]'" x-model="item.qty" min="1" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                             <div class="w-28">
-                                <input type="number" step="0.01" :name="'items[' + index + '][harga]'" x-model="item.harga" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" step="0.01" :name="'items[' + index + '][price]'" x-model="item.price" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
-                            <div class="w-24 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.harga)).toLocaleString('id-ID')"></div>
+                            <div class="w-24 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.price)).toLocaleString('id-ID')"></div>
                             <button type="button" @click="removeItem(index)" class="text-red-500 hover:text-red-700">&times;</button>
                         </div>
                     </template>

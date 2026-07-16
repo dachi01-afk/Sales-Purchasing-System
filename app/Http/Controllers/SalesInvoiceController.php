@@ -11,8 +11,8 @@ class SalesInvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = SalesInvoice::with('items.product', 'deliveryOrder.salesOrder.customer', 'creator')->latest()->paginate(10);
-        return view('sales-invoices.index', compact('invoices'));
+        $salesInvoices = SalesInvoice::with('items.product', 'deliveryOrder.salesOrder.customer', 'creator')->latest()->paginate(10);
+        return view('sales-invoices.index', compact('salesInvoices'));
     }
 
     public function create()

@@ -1,32 +1,32 @@
 <x-app-layout>
-    <x-slot name="header">Receipt Detail #{{ $receipt->id_kwitansi }}</x-slot>
+    <x-slot name="header">Receipt Detail #{{ $receipt->id }}</x-slot>
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <dl class="grid grid-cols-2 gap-4 mb-6">
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#Receipt</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $receipt->id_kwitansi }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $receipt->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#Invoice</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $receipt->invoiceSales->id_invoice_sales }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $receipt->salesInvoice->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Customer</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->invoiceSales->do->so->customer->nama_customer }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->salesInvoice->deliveryOrder->salesOrder->customer->name }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Date</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->tanggal->format('d/m/Y') }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->date->format('d/m/Y') }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Amount</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">Rp {{ number_format($receipt->jumlah, 0, ',', '.') }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">$ {{ number_format($receipt->amount, 0, ',', '.') }}</dd>
                 </div>
                 <div class="col-span-2">
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Notes</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->keterangan ?? '-' }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $receipt->notes ?? '-' }}</dd>
                 </div>
             </dl>
 

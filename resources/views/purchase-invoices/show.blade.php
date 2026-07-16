@@ -1,32 +1,28 @@
 <x-app-layout>
-    <x-slot name="header">Invoice Detail #{{ $purchaseInvoice->id_invoice_purchasing }}</x-slot>
+    <x-slot name="header">Purchase Invoice Detail #{{ $purchaseInvoice->id }}</x-slot>
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <dl class="grid grid-cols-2 gap-4 mb-6">
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#Invoice</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $purchaseInvoice->id_invoice_purchasing }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $purchaseInvoice->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">#PO</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $purchaseInvoice->po->id_po }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">#{{ $purchaseInvoice->purchaseOrder->id }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Vendor</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $purchaseInvoice->po->vendor->nama_vendor }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $purchaseInvoice->purchaseOrder->vendor->name }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Date</dt>
-                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $purchaseInvoice->tanggal->format('d/m/Y') }}</dd>
+                    <dd class="text-sm font-medium text-gray-900 dark:text-white">{{ $purchaseInvoice->date->format('d/m/Y') }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm text-gray-500 dark:text-gray-400">Status</dt>
-                    <dd>
-                        <span class="px-2 py-1 text-xs rounded-full {{ $purchaseInvoice->status === 'lunas' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' }}">
-                            {{ $purchaseInvoice->status }}
-                        </span>
-                    </dd>
+                    <dd><span class="px-2 py-1 text-xs rounded-full {{ $purchaseInvoice->status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">{{ $purchaseInvoice->status }}</span></dd>
                 </div>
             </dl>
 
@@ -40,12 +36,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($purchaseInvoice->details as $d)
+                    @foreach($purchaseInvoice->items as $item)
                     <tr class="border-b dark:border-gray-700">
-                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->sku }} — {{ $d->barang->nama_barang ?? '-' }}</td>
-                        <td class="px-4 py-3 dark:text-gray-300">{{ $d->qty }}</td>
-                        <td class="px-4 py-3 dark:text-gray-300">Rp {{ number_format($d->harga, 0, ',', '.') }}</td>
-                        <td class="px-4 py-3 text-right dark:text-gray-300">Rp {{ number_format($d->subtotal, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">{{ $item->sku }} — {{ $item->product->name ?? '-' }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">{{ $item->qty }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right dark:text-gray-300">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

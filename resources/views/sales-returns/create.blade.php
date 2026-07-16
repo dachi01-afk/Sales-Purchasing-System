@@ -7,7 +7,7 @@
                 doId: '',
                 items: [],
                 loadItems() {
-                    const select = document.getElementById('id_do');
+                    const select = document.getElementById('delivery_order_id');
                     const data = select.options[select.selectedIndex]?.dataset.items;
                     this.items = data ? JSON.parse(data) : [];
                 }
@@ -17,22 +17,22 @@
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery Order</label>
-                        <select name="id_do" id="id_do" x-model="doId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="delivery_order_id" id="delivery_order_id" x-model="doId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select DO</option>
-                            @foreach($dos as $do)
-                            <option value="{{ $do->id_do }}" data-items='{{ $do->details->map(fn($d) => ['sku' => $d->sku, 'nama_barang' => $d->barang->nama_barang ?? '', 'qty_dikirim' => $d->qty_dikirim, 'qty_retur' => 0, 'alasan_item' => '']) }}'>#{{ $do->id_do }} — {{ $do->so->customer->nama_customer }}</option>
+                            @foreach($deliveryOrders as $do)
+                            <option value="{{ $do->id }}" data-items='{{ $do->items->map(fn($d) => ['sku' => $d->sku, 'name' => $d->product->name ?? '', 'qty' => $d->qty, 'return_qty' => 0, 'reason' => '']) }}'>#{{ $do->id }} — {{ $do->salesOrder->customer->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Return Reason</label>
-                    <textarea name="alasan" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('alasan') }}</textarea>
+                    <textarea name="reason" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('reason') }}</textarea>
                 </div>
 
                 <div class="mb-5">
@@ -44,14 +44,14 @@
                         <div class="flex gap-3 items-center mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex-[2]">
                                 <input type="hidden" :name="'items[' + index + '][sku]'" x-model="item.sku">
-                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.nama_barang"></span>
-                                <span class="text-xs text-gray-400 ml-2">(shipped: <span x-text="item.qty_dikirim"></span>)</span>
+                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.name"></span>
+                                <span class="text-xs text-gray-400 ml-2">(shipped: <span x-text="item.qty"></span>)</span>
                             </div>
                             <div class="w-20">
-                                <input type="number" :name="'items[' + index + '][qty_retur]'" x-model="item.qty_retur" min="0" :max="item.qty_dikirim" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" :name="'items[' + index + '][qty]'" x-model="item.return_qty" min="0" :max="item.qty" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                             <div class="flex-1">
-                                <input type="text" :name="'items[' + index + '][alasan_item]'" x-model="item.alasan_item" placeholder="Return reason" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <input type="text" :name="'items[' + index + '][reason]'" x-model="item.reason" placeholder="Return reason" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             </div>
                         </div>
                     </template>

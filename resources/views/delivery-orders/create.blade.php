@@ -7,9 +7,9 @@
                 soId: '',
                 items: [],
                 loadItems() {
-                    const select = document.getElementById('id_so');
+                    const select = document.getElementById('sales_order_id');
                     const data = select.options[select.selectedIndex]?.dataset.items;
-                    this.items = data ? JSON.parse(data).map(i => ({ ...i, qty_dikirim: i.qty })) : [];
+                    this.items = data ? JSON.parse(data).map(i => ({ ...i })) : [];
                 }
             }">
                 @csrf
@@ -17,22 +17,22 @@
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sales Order</label>
-                        <select name="id_so" id="id_so" x-model="soId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="sales_order_id" id="sales_order_id" x-model="soId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select SO</option>
                             @foreach($salesOrders as $salesOrder)
-                            <option value="{{ $salesOrder->id_so }}" data-items='{{ $salesOrder->details->map(fn($d) => ['sku' => $d->sku, 'nama_barang' => $d->barang->nama_barang ?? '', 'qty' => $d->qty]) }}'>#{{ $salesOrder->id_so }} — {{ $salesOrder->customer->nama_customer }}</option>
+                            <option value="{{ $salesOrder->id }}" data-items='{{ $salesOrder->items->map(fn($d) => ['sku' => $d->sku, 'name' => $d->product->name ?? '', 'qty' => $d->qty]) }}'>#{{ $salesOrder->id }} — {{ $salesOrder->customer->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipping Address</label>
-                    <textarea name="alamat_pengiriman" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('alamat_pengiriman') }}</textarea>
+                    <textarea name="shipping_address" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('shipping_address') }}</textarea>
                 </div>
 
                 <div class="mb-5">
@@ -44,11 +44,11 @@
                         <div class="flex gap-3 items-center mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex-1">
                                 <input type="hidden" :name="'items[' + index + '][sku]'" x-model="item.sku">
-                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.nama_barang"></span>
+                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.name"></span>
                                 <span class="text-xs text-gray-400 ml-2">(SO: <span x-text="item.qty"></span>)</span>
                             </div>
                             <div class="w-24">
-                                <input type="number" :name="'items[' + index + '][qty_dikirim]'" x-model="item.qty_dikirim" min="0" :max="item.qty" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" :name="'items[' + index + '][qty]'" x-model="item.qty" min="0" :max="item.qty" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                         </div>
                     </template>

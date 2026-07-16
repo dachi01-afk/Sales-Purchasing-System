@@ -1,28 +1,28 @@
 <x-app-layout>
-    <x-slot name="header">Edit Invoice #{{ $purchaseInvoice->id_invoice_purchasing }}</x-slot>
+    <x-slot name="header">Edit Invoice #{{ $purchaseInvoice->id }}</x-slot>
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <form action="{{ route('purchase-invoices.update', $purchaseInvoice) }}" method="POST" x-data="{
-                poId: {{ $purchaseInvoice->id_po }},
-                items: {{ $purchaseInvoice->details->map(fn($d) => ['sku' => $d->sku, 'nama_barang' => $d->barang->nama_barang ?? '', 'qty' => $d->qty, 'harga' => $d->harga])->toJson() }},
-                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.harga)), 0) }
+                poId: {{ $purchaseInvoice->purchase_order_id }},
+                items: {{ $purchaseInvoice->items->map(fn($d) => ['sku' => $d->sku, 'name' => $d->product->name ?? '', 'qty' => $d->qty, 'price' => $d->price])->toJson() }},
+                get total() { return this.items.reduce((sum, i) => sum + (Number(i.qty) * Number(i.price)), 0) }
             }">
                 @csrf @method('PUT')
 
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purchase Order</label>
-                        <select name="id_po" x-model="poId" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="purchase_order_id" x-model="poId" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select PO</option>
                             @foreach($purchaseOrders as $po)
-                            <option value="{{ $po->id_po }}" @selected($purchaseInvoice->id_po == $po->id_po)>#{{ $po->id_po }} — {{ $po->vendor->nama_vendor }}</option>
+                            <option value="{{ $po->id }}" @selected($purchaseInvoice->purchase_order_id == $po->id)>#{{ $po->id }} — {{ $po->vendor->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', $purchaseInvoice->tanggal->format('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', $purchaseInvoice->date->format('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
@@ -30,7 +30,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                     <select name="status" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                         <option value="draft" @selected($purchaseInvoice->status == 'draft')>Draft</option>
-                        <option value="lunas" @selected($purchaseInvoice->status == 'lunas')>Paid</option>
+                        <option value="paid" @selected($purchaseInvoice->status == 'paid')>Paid</option>
                     </select>
                 </div>
 
@@ -40,15 +40,15 @@
                         <div class="flex gap-3 items-center mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex-[2]">
                                 <input type="hidden" :name="'items[' + index + '][sku]'" x-model="item.sku">
-                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.nama_barang"></span>
+                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.name"></span>
                             </div>
                             <div class="w-20">
                                 <input type="number" :name="'items[' + index + '][qty]'" x-model="item.qty" min="1" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                             <div class="w-28">
-                                <input type="number" step="0.01" :name="'items[' + index + '][harga]'" x-model="item.harga" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" step="0.01" :name="'items[' + index + '][price]'" x-model="item.price" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
-                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.harga)).toLocaleString('id-ID')"></div>
+                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.price)).toLocaleString('id-ID')"></div>
                         </div>
                     </template>
                 </div>

@@ -24,13 +24,13 @@
                 <tbody>
                     @forelse($salesInvoices as $inv)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $inv->id_invoice_sales }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">#{{ $inv->do->id_do }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $inv->do->so->customer->nama_customer }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $inv->tanggal->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">Rp {{ number_format($inv->total, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $inv->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">#{{ $inv->deliveryOrder->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $inv->deliveryOrder->salesOrder->customer->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $inv->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">$ {{ number_format($inv->total, 0, ',', '.') }}</td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 text-xs rounded-full {{ $inv->status === 'lunas' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' }}">{{ $inv->status }}</span>
+                            <span class="px-2 py-1 text-xs rounded-full {{ $inv->status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' }}">{{ $inv->status }}</span>
                         </td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('sales-invoices.show', $inv) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
@@ -38,7 +38,7 @@
                             <a href="{{ route('sales-invoices.edit', $inv) }}" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Edit</a>
                             @endcan
                             @can('sales_invoices.delete')
-                            <x-delete-modal :route="route('sales-invoices.destroy', $inv)" label="invoice #{{ $inv->id_invoice_sales }}" />
+                            <x-delete-modal :route="route('sales-invoices.destroy', $inv)" label="invoice #{{ $inv->id }}" />
                             @endcan
                         </td>
                     </tr>

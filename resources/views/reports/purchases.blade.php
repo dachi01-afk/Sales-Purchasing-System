@@ -25,7 +25,7 @@
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Total Receiving</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalPenerimaan }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalReceipts }}</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Total Invoice (Rp)</p>
@@ -46,12 +46,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($pos as $po)
+                    @forelse($purchaseOrders as $po)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $po->id_po }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->tanggal->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->vendor->nama_vendor }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->details->count() }} item(s)</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $po->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->vendor->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->items->count() }} item(s)</td>
                         <td class="px-6 py-4">{{ $po->status }}</td>
                     </tr>
                     @empty
@@ -60,8 +60,8 @@
                 </tbody>
             </table>
         </div>
-        @if($pos->hasPages())
-        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $pos->links() }}</div>
+        @if($purchaseOrders->hasPages())
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $purchaseOrders->links() }}</div>
         @endif
     </div>
 </x-app-layout>

@@ -23,12 +23,12 @@
                 <tbody>
                     @forelse($salesOrders as $salesOrder)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $salesOrder->id_so }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $salesOrder->customer->nama_customer }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $salesOrder->tanggal->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $salesOrder->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $salesOrder->customer->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $salesOrder->date->format('d/m/Y') }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">Rp {{ number_format($salesOrder->total, 0, ',', '.') }}</td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 text-xs rounded-full {{ $salesOrder->status === 'selesai' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : ($salesOrder->status === 'dikirim' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300') }}">{{ $salesOrder->status }}</span>
+                            <span class="px-2 py-1 text-xs rounded-full {{ $salesOrder->status === 'completed' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : ($salesOrder->status === 'sent' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300') }}">{{ $salesOrder->status }}</span>
                         </td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('sales-orders.show', $salesOrder) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
@@ -36,7 +36,7 @@
                             <a href="{{ route('sales-orders.edit', $salesOrder) }}" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Edit</a>
                             @endcan
                             @can('sales_orders.delete')
-                            <x-delete-modal :route="route('sales-orders.destroy', $salesOrder)" label="SO #{{ $salesOrder->id_so }}" />
+                            <x-delete-modal :route="route('sales-orders.destroy', $salesOrder)" label="SO #{{ $salesOrder->id }}" />
                             @endcan
                         </td>
                     </tr>

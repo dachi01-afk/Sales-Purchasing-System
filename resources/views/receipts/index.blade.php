@@ -21,20 +21,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($receipts as $k)
+                    @forelse($receipts as $receipt)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $k->id_kwitansi }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">#{{ $k->invoiceSales->id_invoice_sales }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $k->invoiceSales->do->so->customer->nama_customer }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $k->tanggal->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">Rp {{ number_format($k->jumlah, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $receipt->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">#{{ $receipt->salesInvoice->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $receipt->salesInvoice->deliveryOrder->salesOrder->customer->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $receipt->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">$ {{ number_format($receipt->amount, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('receipts.show', $k) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
+                            <a href="{{ route('receipts.show', $receipt) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
                             @can('receipts.edit')
-                            <a href="{{ route('receipts.edit', $k) }}" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Edit</a>
+                            <a href="{{ route('receipts.edit', $receipt) }}" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Edit</a>
                             @endcan
                             @can('receipts.delete')
-                            <x-delete-modal :route="route('receipts.destroy', $k)" label="receipt #{{ $k->id_kwitansi }}" />
+                            <x-delete-modal :route="route('receipts.destroy', $receipt)" label="receipt #{{ $receipt->id }}" />
                             @endcan
                         </td>
                     </tr>

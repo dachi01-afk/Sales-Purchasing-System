@@ -21,20 +21,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($salesReturns as $r)
+                    @forelse($returns as $r)
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $r->id_retur_sales }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">#{{ $r->do->id_do }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->do->so->customer->nama_customer }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->tanggal->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->details->count() }} item(s)</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $r->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">#{{ $r->deliveryOrder->id }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->deliveryOrder->salesOrder->customer->name }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $r->items->count() }} item(s)</td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('sales-returns.show', $r) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
                             @can('sales_returns.edit')
                             <a href="{{ route('sales-returns.edit', $r) }}" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Edit</a>
                             @endcan
                             @can('sales_returns.delete')
-                            <x-delete-modal :route="route('sales-returns.destroy', $r)" label="return #{{ $r->id_retur_sales }}" />
+                            <x-delete-modal :route="route('sales-returns.destroy', $r)" label="return #{{ $r->id }}" />
                             @endcan
                         </td>
                     </tr>
@@ -44,8 +44,8 @@
                 </tbody>
             </table>
         </div>
-        @if($salesReturns->hasPages())
-        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $salesReturns->links() }}</div>
+        @if($returns->hasPages())
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">{{ $returns->links() }}</div>
         @endif
     </div>
 </x-app-layout>

@@ -1,32 +1,32 @@
 <x-app-layout>
-    <x-slot name="header">Edit DO #{{ $deliveryOrder->id_do }}</x-slot>
+    <x-slot name="header">Edit DO #{{ $deliveryOrder->id }}</x-slot>
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <form action="{{ route('delivery-orders.update', $deliveryOrder) }}" method="POST" x-data="{
-                soId: {{ $deliveryOrder->id_so }},
-                items: {{ $deliveryOrder->details->map(fn($d) => ['sku' => $d->sku, 'nama_barang' => $d->barang->nama_barang ?? '', 'qty' => $d->qty_dikirim, 'qty_dikirim' => $d->qty_dikirim])->toJson() }}
+                soId: {{ $deliveryOrder->sales_order_id }},
+                items: {{ $deliveryOrder->items->map(fn($d) => ['sku' => $d->sku, 'name' => $d->product->name ?? '', 'qty' => $d->qty])->toJson() }}
             }">
                 @csrf @method('PUT')
 
                 <div class="grid grid-cols-2 gap-4 mb-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sales Order</label>
-                        <select name="id_so" x-model="soId" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <select name="sales_order_id" x-model="soId" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             @foreach($salesOrders as $salesOrder)
-                            <option value="{{ $salesOrder->id_so }}" @selected($deliveryOrder->id_so == $salesOrder->id_so)>#{{ $salesOrder->id_so }} — {{ $salesOrder->customer->nama_customer }}</option>
+                            <option value="{{ $salesOrder->id }}" @selected($deliveryOrder->sales_order_id == $salesOrder->id)>#{{ $salesOrder->id }} — {{ $salesOrder->customer->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', $deliveryOrder->tanggal->format('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <input type="date" name="date" value="{{ old('date', $deliveryOrder->date->format('Y-m-d')) }}" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipping Address</label>
-                    <textarea name="alamat_pengiriman" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('alamat_pengiriman', $deliveryOrder->alamat_pengiriman) }}</textarea>
+                    <textarea name="shipping_address" rows="2" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('shipping_address', $deliveryOrder->shipping_address) }}</textarea>
                 </div>
 
                 <div class="mb-5">
@@ -35,10 +35,10 @@
                         <div class="flex gap-3 items-center mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex-1">
                                 <input type="hidden" :name="'items[' + index + '][sku]'" x-model="item.sku">
-                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.nama_barang"></span>
+                                <span class="text-sm text-gray-900 dark:text-white" x-text="item.sku + ' — ' + item.name"></span>
                             </div>
                             <div class="w-24">
-                                <input type="number" :name="'items[' + index + '][qty_dikirim]'" x-model="item.qty_dikirim" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                <input type="number" :name="'items[' + index + '][qty]'" x-model="item.qty" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
                         </div>
                     </template>
