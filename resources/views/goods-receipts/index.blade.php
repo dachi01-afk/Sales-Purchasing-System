@@ -29,7 +29,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $gr->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">#{{ $gr->purchaseOrder->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $gr->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $gr->details->count() }} items</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $gr->items->count() }} items</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $gr->notes ?? '-' }}</td>
                         <td class="px-6 py-4 flex gap-2">
                             @can('goods_receipts.edit')

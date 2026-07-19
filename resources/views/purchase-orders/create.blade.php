@@ -25,7 +25,7 @@
                         <select name="purchase_request_id" id="purchase_request_id" x-model="purchaseRequestId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select Purchase Request</option>
                             @foreach($purchaseRequests as $pr)
-                            <option value="{{ $pr->id }}" data-items='{{ $pr->details->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty]) }}'>#{{ $pr->id }} — {{ $pr->date->format('d/m/Y') }}</option>
+                            <option value="{{ $pr->id }}" data-items='{{ $pr->items->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty]) }}'>#{{ $pr->id }} — {{ $pr->date->format('d/m/Y') }}</option>
                             @endforeach
                         </select>
                     </div>

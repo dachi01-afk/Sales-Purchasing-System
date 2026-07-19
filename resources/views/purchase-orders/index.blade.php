@@ -31,7 +31,7 @@
                         <td class="px-6 py-4 dark:text-gray-300">#{{ $po->purchaseRequest->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $po->vendor->name }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $po->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->details->count() }} items</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $po->items->count() }} items</td>
                         <td class="px-6 py-4">
                             <span class="text-xs font-medium px-2 py-0.5 rounded
                                 @if($po->status == 'draft') bg-yellow-100 text-yellow-800

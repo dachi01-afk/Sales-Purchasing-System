@@ -3,7 +3,7 @@
 
     <div class="max-w-4xl">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
-            <form action="{{ route('purchase-requests.update', $purchaseRequest) }}" method="POST" x-data="{ items: {{ $purchaseRequest->details->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty, 'notes' => $d->notes])->toJson() }} }">
+            <form action="{{ route('purchase-requests.update', $purchaseRequest) }}" method="POST" x-data="{ items: {{ $purchaseRequest->items->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty, 'notes' => $d->notes])->toJson() }} }">
                 @csrf @method('PUT')
 
                 <div class="mb-5">

@@ -19,27 +19,27 @@
     </div>
 
     @php
-        $grossProfit = $totalPenjualan - $totalPembelian;
-        $totalInflow = $totalPenerimaanKwitansi;
-        $balance = $totalInflow - $totalPembelian;
+        $grossProfit = $totalSales - $totalPurchases;
+        $totalInflow = $totalReceipts;
+        $balance = $totalInflow - $totalPurchases;
     @endphp
 
     <div class="grid grid-cols-2 gap-4 mb-4">
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Total Purchases (Invoice)</p>
-            <p class="text-2xl font-bold text-red-600">Rp {{ number_format($totalPembelian, 0, ',', '.') }}</p>
+            <p class="text-2xl font-bold text-red-600">Rp {{ number_format($totalPurchases, 0, ',', '.') }}</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Total Sales (Invoice)</p>
-            <p class="text-2xl font-bold text-green-600">Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</p>
+            <p class="text-2xl font-bold text-green-600">Rp {{ number_format($totalSales, 0, ',', '.') }}</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Purchase Returns</p>
-            <p class="text-2xl font-bold text-orange-600">{{ $totalReturPembelian }} time(s)</p>
+            <p class="text-2xl font-bold text-orange-600">{{ $totalPurchaseReturns }} time(s)</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Sales Returns</p>
-            <p class="text-2xl font-bold text-orange-600">{{ $totalReturPenjualan }} time(s)</p>
+            <p class="text-2xl font-bold text-orange-600">{{ $totalSalesReturns }} time(s)</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4">
             <p class="text-sm text-gray-500 dark:text-gray-400">Cash Receipts</p>
@@ -64,7 +64,7 @@
                 </tr>
                 <tr class="border-b dark:border-gray-700">
                     <td class="px-4 py-3 text-gray-900 dark:text-white">Cash Outflow (Purchases)</td>
-                    <td class="px-4 py-3 text-right text-red-600 font-medium">(Rp {{ number_format($totalPembelian, 0, ',', '.') }})</td>
+                    <td class="px-4 py-3 text-right text-red-600 font-medium">(Rp {{ number_format($totalPurchases, 0, ',', '.') }})</td>
                 </tr>
                 <tr class="font-bold">
                     <td class="px-4 py-3 text-gray-900 dark:text-white">Cash Balance</td>

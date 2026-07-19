@@ -20,7 +20,7 @@
                         <select name="purchase_order_id" id="purchase_order_id" x-model="poId" @change="loadItems" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select Purchase Order</option>
                             @foreach($purchaseOrders as $po)
-                            <option value="{{ $po->id }}" data-items='{{ $po->details->map(fn($d) => ['sku' => $d->sku, 'product_name' => $d->product->name ?? '', 'qty_po' => $d->qty, 'qty_received' => $d->qty]) }}'>#{{ $po->id }} — {{ $po->vendor->name }} ({{ $po->date->format('d/m/Y') }})</option>
+                            <option value="{{ $po->id }}" data-items='{{ $po->items->map(fn($d) => ['sku' => $d->sku, 'product_name' => $d->product->name ?? '', 'qty_po' => $d->qty, 'qty_received' => $d->qty]) }}'>#{{ $po->id }} — {{ $po->vendor->name }} ({{ $po->date->format('d/m/Y') }})</option>
                             @endforeach
                         </select>
                     </div>

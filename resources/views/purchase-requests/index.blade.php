@@ -28,7 +28,7 @@
                     <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $pr->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $pr->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">{{ $pr->details->count() }} items</td>
+                        <td class="px-6 py-4 dark:text-gray-300">{{ $pr->items->count() }} items</td>
                         <td class="px-6 py-4">
                             <span class="text-xs font-medium px-2 py-0.5 rounded @if($pr->status == 'draft') bg-yellow-100 text-yellow-800 @elseif($pr->status == 'approved') bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
                                 {{ ucfirst($pr->status) }}

@@ -5,7 +5,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <form action="{{ route('purchase-orders.update', $purchaseOrder) }}" method="POST" x-data="{
                 purchaseRequestId: {{ $purchaseOrder->purchase_request_id }},
-                items: {{ $purchaseOrder->details->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty, 'price' => $d->price])->toJson() }}
+                items: {{ $purchaseOrder->items->map(fn($d) => ['sku' => $d->sku, 'qty' => $d->qty, 'price' => $d->price])->toJson() }}
             }">
                 @csrf @method('PUT')
 

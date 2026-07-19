@@ -5,7 +5,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <form action="{{ route('goods-receipts.update', $goodsReceipt) }}" method="POST" x-data="{
                 poId: {{ $goodsReceipt->purchase_order_id }},
-                items: {{ $goodsReceipt->details->map(fn($d) => ['sku' => $d->sku, 'product_name' => $d->product->name ?? '', 'qty_po' => $d->goodsReceipt->purchaseOrder->details->firstWhere('sku', $d->sku)?->qty ?? $d->qty_received, 'qty_received' => $d->qty_received])->toJson() }}
+                items: {{ $goodsReceipt->items->map(fn($d) => ['sku' => $d->sku, 'product_name' => $d->product->name ?? '', 'qty_po' => $d->goodsReceipt->purchaseOrder->items->firstWhere('sku', $d->sku)?->qty ?? $d->qty_received, 'qty_received' => $d->qty_received])->toJson() }}
             }">
                 @csrf @method('PUT')
 
