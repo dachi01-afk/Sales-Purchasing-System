@@ -12,6 +12,7 @@ Aplikasi manajemen siklus pembelian dan penjualan full-stack berbasis **Laravel 
 | **Reports** | Purchases, Sales, Financial |
 | **Dashboard** | Monthly stats, latest PO/SO, pending summary (role-based) |
 | **RBAC** | 5 roles with granular permissions per module |
+| **Xendit Payment** | Invoice API, Payment Link (QRIS/VA/E-Wallet), Webhook auto-update, Receipt auto-creation |
 | **UI** | Full dark mode, Flowbite components, responsive |
 
 ## Tech Stack
@@ -78,6 +79,84 @@ npm run build
 composer run dev
 ```
 
+## Xendit Payment Gateway Integration
+
+Integrasi **Xendit Invoice API** untuk menerima pembayaran online melalui QRIS, Virtual Account, dan E-Wallet (DANA/OVO/GoPay).
+
+### Fitur Xendit
+
+| Fitur | Keterangan |
+|---|---|
+| **Send Payment Link** | Kirim link pembayaran Xendit ke customer dari halaman Sales Invoice |
+| **Auto Webhook** | Status invoice otomatis update saat `invoice.paid` dari Xendit |
+| **Auto Receipt** | Receipt terbuat otomatis saat pembayaran sukses |
+| **Refresh Status** | Webhook handler mendukung dual format (production + Simulate Callback) |
+
+### Setup Environment (.env)
+
+```bash
+XENDIT_API_KEY=xnd_development_...
+XENDIT_WEBHOOK_TOKEN=your_webhook_verification_token
+ASSET_URL=https://your-ngrok-domain.ngrok-free.dev
+```
+
+### Setup di Xendit Dashboard
+
+1. **Login** ke [Xendit Dashboard Sandbox](https://dashboard.xendit.co/sandbox)
+2. **Settings → Callback URL**
+   - Isi: `https://your-domain.ngrok-free.dev/api/xendit/webhook`
+   - Callback Token: isi dengan nilai `XENDIT_WEBHOOK_TOKEN` dari `.env`
+3. **Settings → API Key** → copy `Development` API Key ke `.env`
+
+### Alur Pembayaran
+
+```
+Sales Invoice (draft)
+    ↓  [Send Payment Link]
+Sales Invoice (pending_payment) + link Xendit
+    ↓  [Customer buka link & bayar via QRIS/VA/EWallet]
+Xendit kirim Webhook → /api/xendit/webhook
+    ↓  [Webhook Controller]
+Sales Invoice (paid) + Receipt auto-created
+```
+
+### Cara Kirim Payment Link
+
+1. Buka menu **Sales Invoices**
+2. Pilih invoice status **draft**
+3. Klik tombol **Send Payment Link** (warna hijau)
+4. Invoice berubah jadi `pending_payment` + link Xendit muncul
+5. Klik **Open Payment Page** untuk test bayar
+
+### Test Webhook (Sandbox)
+
+Xendit sandbox tidak otomatis kirim `invoice.paid` setelah simulasi bayar. Gunakan **Simulate Callback**:
+
+1. Buka [Xendit Dashboard](https://dashboard.xendit.co/sandbox) → **Invoices**
+2. Cari invoice status `pending_payment`
+3. Klik invoice → tombol **Simulate Callback**
+4. Pilih event **`invoice.paid`** → Send
+5. Response: `{"status": "ok"}`
+6. Refresh halaman Laravel → invoice status `paid`, Receipt auto terbuat
+
+### Route Xendit
+
+| Method | URL | Fungsi |
+|---|---|---|
+| POST | `/sales-invoices/{id}/send-payment-link` | Kirim link pembayaran Xendit |
+| POST | `/api/xendit/webhook` | Webhook callback dari Xendit |
+
+### File Terkait
+
+| File | Fungsi |
+|---|---|
+| `app/Services/XenditService.php` | Service class untuk panggil Xendit API |
+| `app/Http/Controllers/Api/XenditWebhookController.php` | Handler webhook `invoice.paid` |
+| `app/Http/Controllers/SalesInvoiceController.php` | Action Send Payment Link |
+| `config/xendit.php` | Konfigurasi API key & webhook token |
+| `routes/api.php` | Route webhook `POST /api/xendit/webhook` |
+| `bootstrap/app.php` | CSRF exception + trustProxies |
+
 ## User Akun (Dummy Seeder)
 
 | Email | Password | Role |
@@ -133,6 +212,10 @@ GET          /dashboard                      # Dashboard
 /resource    /sales-invoices                 # can:sales_invoices.view
 /resource    /sales-returns                  # can:sales_returns.view
 /resource    /receipts                       # can:receipts.view
+
+# Xendit Payment
+POST         /api/xendit/webhook             # Webhook Xendit (public)
+POST         /sales-invoices/{id}/send-payment-link  # can:sales_invoices.edit
 
 # Reports
 GET          /reports/purchases              # can:reports.purchases
