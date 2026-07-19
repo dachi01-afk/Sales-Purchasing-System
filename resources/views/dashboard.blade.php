@@ -26,14 +26,14 @@
         @can('purchase_invoices.view')
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5">
             <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Purchases ($)</p>
-            <p class="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">$ {{ number_format($totalPurchases, 0, ',', '.') }}</p>
+            <p class="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">Rp {{ number_format($totalPurchases, 0, ',', '.') }}</p>
         </div>
         @endcan
 
         @can('sales_invoices.view')
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5">
             <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Sales ($)</p>
-            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">$ {{ number_format($totalSales, 0, ',', '.') }}</p>
+            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">Rp {{ number_format($totalSales, 0, ',', '.') }}</p>
         </div>
         @endcan
     </div>
@@ -141,7 +141,7 @@
             <div class="flex items-center gap-2 text-sm">
                 <span class="w-2 h-2 rounded-full bg-green-400"></span>
                 <span class="text-gray-600 dark:text-gray-400">Receipts This Month:</span>
-                <span class="font-medium text-gray-900 dark:text-white">$ {{ number_format($totalReceipts, 0, ',', '.') }}</span>
+                <span class="font-medium text-gray-900 dark:text-white">Rp {{ number_format($totalReceipts, 0, ',', '.') }}</span>
             </div>
             @endcan
         </div>

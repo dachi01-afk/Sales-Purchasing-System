@@ -47,15 +47,15 @@
                     <tr class="border-b dark:border-gray-700">
                         <td class="px-4 py-3 dark:text-gray-300">{{ $d->sku }} — {{ $d->product->name ?? '-' }}</td>
                         <td class="px-4 py-3 dark:text-gray-300">{{ $d->qty }}</td>
-                        <td class="px-4 py-3 dark:text-gray-300">$ {{ number_format($d->price, 0, ',', '.') }}</td>
-                        <td class="px-4 py-3 text-right dark:text-gray-300">$ {{ number_format($d->subtotal, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 dark:text-gray-300">Rp {{ number_format($d->price, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right dark:text-gray-300">Rp {{ number_format($d->subtotal, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot class="text-sm font-semibold text-gray-900 dark:text-white">
                     <tr>
                         <td colspan="3" class="px-4 py-3 text-right">Total</td>
-                        <td class="px-4 py-3 text-right">$ {{ number_format($salesInvoice->total, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right">Rp {{ number_format($salesInvoice->total, 0, ',', '.') }}</td>
                     </tr>
                 </tfoot>
             </table>

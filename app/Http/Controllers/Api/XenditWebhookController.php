@@ -21,12 +21,12 @@ class XenditWebhookController extends Controller
         }
 
         $payload = $request->all();
-        $event = $payload['event'] ?? '';
-        $data = $payload['data'] ?? [];
+        $event = $payload['event'] ?? null;
+        $data = $payload['data'] ?? $payload;
 
         Log::info('Xendit webhook received', ['event' => $event, 'external_id' => $data['external_id'] ?? '']);
 
-        if ($event !== 'invoice.paid') {
+        if ($event !== 'invoice.paid' && ($data['status'] ?? '') !== 'PAID') {
             return response()->json(['status' => 'ignored']);
         }
 
@@ -49,7 +49,7 @@ class XenditWebhookController extends Controller
             return response()->json(['status' => 'already_paid']);
         }
 
-        $paidAmount = ($data['paid_amount'] ?? $data['amount'] ?? 0) / 100;
+        $paidAmount = (int) ($data['paid_amount'] ?? $data['amount'] ?? 0);
         $paymentMethod = $data['payment_method'] ?? $data['payment_channel'] ?? null;
 
         \DB::transaction(function () use ($invoice, $paidAmount, $paymentMethod, $data) {

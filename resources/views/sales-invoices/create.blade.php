@@ -56,13 +56,13 @@
                             <div class="w-28">
                                 <input type="number" step="0.01" :name="'items[' + index + '][price]'" x-model="item.price" min="0" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             </div>
-                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'$ ' + (Number(item.qty) * Number(item.price)).toFixed(2)"></div>
+                            <div class="w-28 text-sm text-gray-900 dark:text-white text-right" x-text="'Rp ' + (Number(item.qty) * Number(item.price)).toLocaleString('id-ID')"></div>
                         </div>
                     </template>
                 </div>
 
                 <div class="text-right text-lg font-semibold text-gray-900 dark:text-white mb-5">
-                    Total: <span x-text="'$ ' + total.toFixed(2)"></span>
+                    Total: <span x-text="'Rp ' + total.toLocaleString('id-ID')"></span>
                 </div>
 
                 <div class="flex gap-3">

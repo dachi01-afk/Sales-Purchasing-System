@@ -27,7 +27,7 @@
                         <td class="px-6 py-4 dark:text-gray-300">#{{ $receipt->salesInvoice->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $receipt->salesInvoice->deliveryOrder->salesOrder->customer->name }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $receipt->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">$ {{ number_format($receipt->amount, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('receipts.show', $receipt) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">Detail</a>
                             @can('receipts.edit')

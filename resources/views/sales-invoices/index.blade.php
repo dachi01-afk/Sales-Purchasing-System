@@ -29,7 +29,7 @@
                         <td class="px-6 py-4 dark:text-gray-300">#{{ $inv->deliveryOrder->id }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $inv->deliveryOrder->salesOrder->customer->name }}</td>
                         <td class="px-6 py-4 dark:text-gray-300">{{ $inv->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 dark:text-gray-300">$ {{ number_format($inv->total, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 dark:text-gray-300">Rp {{ number_format($inv->total, 0, ',', '.') }}</td>
                         <td class="px-6 py-4">
                             <span class="px-2 py-1 text-xs rounded-full
                                 {{ $inv->status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : '' }}

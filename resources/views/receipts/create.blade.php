@@ -12,7 +12,7 @@
                         <select name="sales_invoice_id" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="">Select Invoice</option>
                             @foreach($invoices as $inv)
-                            <option value="{{ $inv->id }}">#{{ $inv->id }} — {{ $inv->deliveryOrder->salesOrder->customer->name }} ($ {{ number_format($inv->total, 0, ',', '.') }})</option>
+                            <option value="{{ $inv->id }}">#{{ $inv->id }} — {{ $inv->deliveryOrder->salesOrder->customer->name }} (Rp {{ number_format($inv->total, 0, ',', '.') }})</option>
                             @endforeach
                         </select>
                     </div>
