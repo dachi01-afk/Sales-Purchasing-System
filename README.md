@@ -13,7 +13,7 @@ Aplikasi manajemen siklus pembelian dan penjualan full-stack berbasis **Laravel 
 | **Dashboard** | Monthly stats, latest PO/SO, pending summary (role-based) |
 | **RBAC** | 5 roles with granular permissions per module |
 | **Xendit Payment** | Invoice API, Payment Link (QRIS/VA/E-Wallet), Webhook auto-update, Receipt auto-creation |
-| **DataTables (Yajra)** | Server-side processing, search, sort, pagination di semua halaman Laporan |
+| **DataTables (Yajra)** | Server-side processing, search, sort, pagination, export Excel/CSV di semua halaman Laporan |
 | **UI** | Full dark mode, Flowbite components, responsive |
 
 ## Tech Stack
@@ -171,6 +171,7 @@ Integrasi **Yajra DataTables (server-side)** untuk semua halaman Laporan agar me
 | **Sort multi-kolom** | Klik header tabel untuk sorting ascending/descending |
 | **Pagination** | Pagination dengan jumlah entri per halaman bisa diatur |
 | **Date filter** | Filter tanggal tetap berfungsi (Purchase & Sales Reports) |
+| **Export Excel/CSV** | Tombol export di atas tabel, download file `.xlsx` / `.csv` via DataTables Buttons |
 
 ### Halaman yang menggunakan DataTables
 
@@ -187,16 +188,17 @@ Integrasi **Yajra DataTables (server-side)** untuk semua halaman Laporan agar me
 | **Package** | `yajra/laravel-datatables-oracle` (Laravel server-side) |
 | **JS Library** | DataTables 2.x + jQuery 3.7 (via CDN) |
 | **CSS Theme** | Tailwind CSS integration (`dataTables.tailwindcss.css`) |
+| **Export** | DataTables Buttons 3.x + JSZip (via CDN) — client-side export |
 
 ### File Terkait DataTables
 
 | File | Fungsi |
 |---|---|
 | `app/Http/Controllers/ReportController.php` | Method `products()`, `productsData()`, `purchasesData()`, `salesData()` |
-| `resources/views/reports/products.blade.php` | View Product Report dengan DataTables |
-| `resources/views/reports/purchases.blade.php` | View Purchase Reports dengan DataTables |
-| `resources/views/reports/sales.blade.php` | View Sales Reports dengan DataTables |
-| `resources/views/layouts/app.blade.php` | CDN jQuery + DataTables CSS/JS |
+| `resources/views/reports/products.blade.php` | View Product Report dengan DataTables + export buttons |
+| `resources/views/reports/purchases.blade.php` | View Purchase Reports dengan DataTables + export buttons |
+| `resources/views/reports/sales.blade.php` | View Sales Reports dengan DataTables + export buttons |
+| `resources/views/layouts/app.blade.php` | CDN jQuery + DataTables + Buttons + JSZip CSS/JS |
 
 ## User Akun (Dummy Seeder)
 
