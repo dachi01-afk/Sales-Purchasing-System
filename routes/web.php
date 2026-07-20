@@ -50,9 +50,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('receipts', ReceiptController::class)->middleware('can:receipts.view');
 
     // Reports
+    Route::get('reports/products', [ReportController::class, 'products'])->name('reports.products')->middleware('can:products.view');
     Route::get('reports/purchases', [ReportController::class, 'purchases'])->name('reports.purchases')->middleware('can:reports.purchases');
     Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales')->middleware('can:reports.sales');
     Route::get('reports/financial', [ReportController::class, 'financial'])->name('reports.financial')->middleware('can:reports.financial');
+
+    // DataTables endpoints
+    Route::get('reports/products/data', [ReportController::class, 'productsData'])->name('reports.products.data');
+    Route::get('reports/purchases/data', [ReportController::class, 'purchasesData'])->name('reports.purchases.data');
+    Route::get('reports/sales/data', [ReportController::class, 'salesData'])->name('reports.sales.data');
 });
 
 require __DIR__.'/auth.php';

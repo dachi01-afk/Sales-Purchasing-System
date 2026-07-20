@@ -13,6 +13,7 @@ Aplikasi manajemen siklus pembelian dan penjualan full-stack berbasis **Laravel 
 | **Dashboard** | Monthly stats, latest PO/SO, pending summary (role-based) |
 | **RBAC** | 5 roles with granular permissions per module |
 | **Xendit Payment** | Invoice API, Payment Link (QRIS/VA/E-Wallet), Webhook auto-update, Receipt auto-creation |
+| **DataTables (Yajra)** | Server-side processing, search, sort, pagination di semua halaman Laporan |
 | **UI** | Full dark mode, Flowbite components, responsive |
 
 ## Tech Stack
@@ -157,6 +158,46 @@ Xendit sandbox tidak otomatis kirim `invoice.paid` setelah simulasi bayar. Gunak
 | `routes/api.php` | Route webhook `POST /api/xendit/webhook` |
 | `bootstrap/app.php` | CSRF exception + trustProxies |
 
+## Yajra DataTables Integration
+
+Integrasi **Yajra DataTables (server-side)** untuk semua halaman Laporan agar mendukung pencarian, sorting, dan pagination real-time tanpa refresh halaman.
+
+### Fitur DataTables
+
+| Fitur | Keterangan |
+|---|---|
+| **Server-side processing** | Semua data diproses di backend (tidak loading semua data sekaligus) |
+| **Search otomatis** | Kolom pencarian di setiap tabel laporan |
+| **Sort multi-kolom** | Klik header tabel untuk sorting ascending/descending |
+| **Pagination** | Pagination dengan jumlah entri per halaman bisa diatur |
+| **Date filter** | Filter tanggal tetap berfungsi (Purchase & Sales Reports) |
+
+### Halaman yang menggunakan DataTables
+
+| Halaman | Route | Data |
+|---|---|---|
+| **Product Report** | `/reports/products` | Products (SKU, Name, Price) |
+| **Purchase Reports** | `/reports/purchases` | Purchase Orders (PO#, Date, Vendor, Items, Status) |
+| **Sales Reports** | `/reports/sales` | Sales Orders (SO#, Date, Customer, Items, Status) |
+
+### Tech Stack DataTables
+
+| Komponen | Keterangan |
+|---|---|
+| **Package** | `yajra/laravel-datatables-oracle` (Laravel server-side) |
+| **JS Library** | DataTables 2.x + jQuery 3.7 (via CDN) |
+| **CSS Theme** | Tailwind CSS integration (`dataTables.tailwindcss.css`) |
+
+### File Terkait DataTables
+
+| File | Fungsi |
+|---|---|
+| `app/Http/Controllers/ReportController.php` | Method `products()`, `productsData()`, `purchasesData()`, `salesData()` |
+| `resources/views/reports/products.blade.php` | View Product Report dengan DataTables |
+| `resources/views/reports/purchases.blade.php` | View Purchase Reports dengan DataTables |
+| `resources/views/reports/sales.blade.php` | View Sales Reports dengan DataTables |
+| `resources/views/layouts/app.blade.php` | CDN jQuery + DataTables CSS/JS |
+
 ## User Akun (Dummy Seeder)
 
 | Email | Password | Role |
@@ -184,7 +225,7 @@ Xendit sandbox tidak otomatis kirim `invoice.paid` setelah simulasi bayar. Gunak
 | **Sales Invoices** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
 | **Sales Returns** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | ✓/✓/-/- | -/-/-/- | ✓/-/-/- |
 | **Receipts** | view/create/edit/delete | ✓/✓/✓/✓ | -/-/-/- | -/-/-/- | ✓/✓/✓/- | ✓/-/-/- |
-| **Reports** | purchases/sales/financial | ✓/✓/✓ | -/-/- | -/-/- | -/-/- | ✓/✓/✓ |
+| **Reports** | purchases/sales/financial/products | ✓/✓/✓/✓ | -/-/-/- | -/-/-/- | -/-/-/- | ✓/✓/✓/✓ |
 
 Detail permission selengkapnya: [docs/authorization.md](docs/authorization.md)
 
@@ -218,7 +259,11 @@ POST         /api/xendit/webhook             # Webhook Xendit (public)
 POST         /sales-invoices/{id}/send-payment-link  # can:sales_invoices.edit
 
 # Reports
+GET          /reports/products               # can:products.view
 GET          /reports/purchases              # can:reports.purchases
 GET          /reports/sales                  # can:reports.sales
 GET          /reports/financial              # can:reports.financial
+GET          /reports/products/data          # DataTables JSON (internal)
+GET          /reports/purchases/data         # DataTables JSON (internal)
+GET          /reports/sales/data             # DataTables JSON (internal)
 ```

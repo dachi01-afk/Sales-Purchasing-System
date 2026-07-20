@@ -7,6 +7,16 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.tailwindcss.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.4/css/responsive.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.2/css/buttons.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.tailwindcss.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.4/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.2/js/buttons.html5.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-gray-50 dark:bg-gray-900">
@@ -153,7 +163,7 @@
                 </li>
                 @endcan
 
-                @canany(['reports.purchases', 'reports.sales', 'reports.financial'])
+                @canany(['reports.purchases', 'reports.sales', 'reports.financial', 'products.view'])
                 <li>
                     <button type="button" class="flex items-center p-2 w-full text-base font-medium text-gray-900 dark:text-white rounded-lg transition duration-75 group hover:bg-gray-100 dark:hover:bg-gray-700" aria-controls="dropdown-laporan" data-collapse-toggle="dropdown-laporan">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -169,6 +179,7 @@
                         @can('reports.purchases')<li><a href="{{ route('reports.purchases') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.purchases') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Purchase Reports</a></li>@endcan
                         @can('reports.sales')<li><a href="{{ route('reports.sales') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.sales') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Sales Reports</a></li>@endcan
                         @can('reports.financial')<li><a href="{{ route('reports.financial') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.financial') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Financial Reports</a></li>@endcan
+                        @can('products.view')<li><a href="{{ route('reports.products') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg {{ request()->routeIs('reports.products') ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Product Report</a></li>@endcan
                     </ul>
                 </li>
                 @endcanany
@@ -204,5 +215,6 @@
 
     </main>
 
+    @stack('scripts')
 </body>
 </html>
